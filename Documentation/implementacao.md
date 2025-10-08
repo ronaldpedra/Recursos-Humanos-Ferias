@@ -7,3 +7,5 @@
 ```bash
 python -m venv venv
 ```
+
+**Ative-o com `.venv/Scripts/activate` (Windows) ou `source .venv/bin/activate` (macOS/Linux)**
