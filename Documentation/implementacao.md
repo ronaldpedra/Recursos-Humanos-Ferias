@@ -4,7 +4,7 @@
 
 **Para criar um ambiente virtual Python no VS Code, abra o terminal integrado (Ctrl+`), navegue até o diretório do seu projeto, execute o comando**
 
-**Este video pode ajudar: `https://www.youtube.com/watch?v=dQw4w9WgXcQ`**
+**Este video pode ajudar: `(https://www.youtube.com/watch?v=dQw4w9WgXcQ)`**
 
 ```bash
 python -m venv venv
