@@ -1,3 +1,3 @@
-'''python
+'''bash
 python -m venv venv
 '''
