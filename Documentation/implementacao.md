@@ -8,4 +8,14 @@
 python -m venv venv
 ```
 
-**Ative-o com `.venv/Scripts/activate` (Windows) ou `source .venv/bin/activate` (macOS/Linux)**
+**O PowerShell vem restrito por padrão, assim ele nega a ativação do Ambiente Virtual. É necessário liberar as permissões. Abra o PowerShell como Administrador e execute o comando**
+
+```bash
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+**Ative-o com `./venv/Scripts/activate` (Windows) ou `source ./venv/bin/activate` (macOS/Linux)**
+
+**Dê preferência para utilizar o interpretador python que está localizado no ambiente virtual quando o sistema te pedir para escolher um interpretador.**
+
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
