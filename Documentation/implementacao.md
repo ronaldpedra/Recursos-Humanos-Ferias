@@ -35,3 +35,4 @@ Crie o arquivo `requirements.txt` conforme definido no Projeto.
 ```bash
 pip install -r requirements.txt
 ```
+

@@ -210,3 +210,62 @@ class SolicitacaoFerias(db.Model):
     - `/gestor/ferias/editar/<id>`: Permissão total para editar qualquer solicitação.
 
 ---
+
+**Próximos Passos Imediatos**
+
+1. **Montar a Estrutura de Pastas**: Crie as pastas e arquivos conforme descrito na Fase 1.
+
+2. **Configurar o Ambiente Virtual e Instalar as Dependências**:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # ou venv\Scripts\activate no Windows
+pip install -r requirements.txt
+```
+
+3. **Codificar os Modelos**: Crie o arquivo `app/models.py` com o código planejado.
+
+4. **Configurar a Aplicação Inicial**: Criar o `__init__.py`, `config.py` e `run.py` para carregar as configurações do `.env`, inicializar o Flask, o SQLAlchemy e o Flask-Migrate.
+
+---
+
+**Esqueleto da nossa aplicação Flask**
+
+ A seguir implemente o código para os três arquivos essenciais que inicializam tudo: `config.py`, `app/__init__.py` e `run.py`.
+
+---
+
+**Passo 1: Arquivo de Configuração (`config.py`)**
+
+Este arquivo irá carregar as variáveis do seu arquivo `.env` e disponibilizá-las para a aplicação.
+
+Crie o arquivo `config.py` na raiz do projeto (`/projeto-ferias/config.py`) e adicione o seguinte código:
+
+```python
+# /projeto-ferias/config.py
+
+import os
+from dotenv import load_dotenv
+
+# Encontra o caminho absoluto para o diretório raiz do projeto
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Carrega as variáveis de ambiente do arquivo .env
+load_dotenv(os.path.join(basedir, '.env'))
+
+class Config:
+    """Configurações base da aplicação."""
+    # Chave secreta para proteger sessões e cookies. MUDE ISSO!
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'voce-nunca-vai-adivinhar'
+    
+    # Configuração do SQLAlchemy
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'ferias.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+```
+
+**Explicação:**
+
+`load_dotenv()`: Lê o seu arquivo .env e carrega as variáveis (como `SECRET_KEY` e `DATABASE_URL`).
+
+`SQLALCHEMY_DATABASE_URI`: Informa ao SQLAlchemy onde está nosso banco de dados. Usamos SQLite por padrão para facilitar o início, mas pode ser facilmente trocado para PostgreSQL ou MySQL no `.env`.
