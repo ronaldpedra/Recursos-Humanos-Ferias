@@ -2,7 +2,7 @@
 
 ## Etapas
 
-**Configurar o Ambiente Virtual**
+**1. Configurar o Ambiente Virtual**
 
 Para as etapas de criação do Ambiente Virtual este video pode ajudar: `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
@@ -24,7 +24,7 @@ Dê preferência para utilizar o interpretador python que está localizado no am
 
 ---
 
-**Monte a Estrutura de Pastas**
+**2. Monte a Estrutura de Pastas**
 
 Crie as pastas e arquivos conforme descrito na Fase 1 do Projeto.
 
