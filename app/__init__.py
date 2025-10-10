@@ -27,3 +27,26 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app)
     login_manager.init_app(app)
+
+    # Importa os modelos para que o Flask-Migrate os reconheça
+    from app.models import Usuario
+
+    # Função para carregar o usuário da sessão
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Usuario.query.get(int(user_id))
+    
+    # --- Registro dos Blueprints (nossas rotas organizadas) ---
+    # Ainda não criamos esses arquivos, mas já deixamos a estrutura pronta.
+    # from app.routes.auth_routes import bp as auth_bp
+    # app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    # from app.routes.militar_routes import bp as militar_bp
+    # app.register_blueprint(militar_bp, url_prefix='/militar')
+
+    # Apenas uma rota de teste para garantir que tudo está funcionando
+    @app.route('/teste')
+    def test_page():
+        return '<h1>A configuração inicial está funcionando!</h1>'
+    
+    return app
