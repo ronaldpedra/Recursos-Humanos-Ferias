@@ -336,3 +336,78 @@ def create_app(config_class=Config):
 - A função `create_app` é a "fábrica". Ela monta nossa aplicação, carrega as configurações e conecta as extensões (como o banco de dados).
 
 - `login_manager.user_loader`: É uma função exigida pelo Flask-Login. Ela explica como encontrar um usuário no banco de dados a partir do ID que é salvo na sessão do navegador.
+
+---
+
+**Passo 3: Ponto de Entrada (`run.py`)**
+
+Este é o script que você executará para iniciar o servidor de desenvolvimento.
+
+Crie o arquivo `run.py` na raiz do projeto (`/projeto-ferias/run.py`):
+
+```python
+# /projeto-ferias/run.py
+
+from app import create_app, db
+from app.models import Usuario, Secao, PeriodoAquisitivo, SolicitacaoFerias
+
+# Cria a instância da aplicação usando a nossa fábrica
+app = create_app()
+
+@app.shell_context_processor
+def make_shell_context():
+    """
+    Disponibiliza os modelos no shell do Flask para facilitar testes.
+    Comando: flask shell
+    """
+    return {
+        'db': db, 
+        'Usuario': Usuario, 
+        'Secao': Secao, 
+        'PeriodoAquisitivo': PeriodoAquisitivo,
+        'SolicitacaoFerias': SolicitacaoFerias
+    }
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+---
+
+**O que Fazer Agora: Inicializando o Banco de Dados**
+
+Com esses arquivos e o `app/models.py` que fizemos antes, a estrutura base está pronta. O próximo passo é criar o banco de dados.
+
+Abra seu terminal na pasta raiz `/projeto-ferias/` (com o ambiente virtual `venv` ativado) e execute os seguintes comandos em sequência:
+
+1. **Informe ao Flask qual é a sua aplicação principal:**
+
+- No Linux/macOS: `export FLASK_APP=run.py`
+
+- No Windows: `set FLASK_APP=run.py`
+
+2. **Crie o repositório de migrações (só precisa ser feito uma vez):**
+
+```bash
+flask db init
+```
+
+Isso criará a pasta migrations.
+
+3. **Crie a primeira migração (um "snapshot" dos seus modelos):**
+
+```bash
+flask db migrate -m "Estrutura inicial do banco de dados"
+```
+
+Isso lerá seus modelos em `app/models.py` e criará um script de migração na pasta `migrations/versions/`.
+
+4. **Aplique a migração para criar o banco de dados:**
+
+```bash
+flask db upgrade
+```
+
+Este comando executará o script e criará o arquivo `ferias.db` na raiz do seu projeto com todas as tabelas que definimos!
+
+**Ao final, você terá um servidor Flask rodando.** Você pode iniciar o servidor com `flask run` ou `python run.py` e acessar `http://127.0.0.1:5000/test` no seu navegador para ver a mensagem de confirmação.
