@@ -6,3 +6,4 @@ import enum
 
 
 db = SQLAlchemy()
+
