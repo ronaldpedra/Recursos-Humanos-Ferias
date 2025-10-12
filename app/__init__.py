@@ -1,5 +1,6 @@
-# ./app/__init__.py
-
+"""
+/projeto-ferias/app/__init__.py
+"""
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -11,7 +12,6 @@ from config import Config
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-
 # Define a view de login. Se um usuário não logado tentar acessar uma página protegida,
 # ele será redirecionado para a rota.
 login_manager.login_view = 'auth.login' # 'auth' é o nome do Blueprint que criaremos
@@ -25,7 +25,7 @@ def create_app(config_class=Config):
 
     # Inicializa as extensões com a app
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     # Importa os modelos para que o Flask-Migrate os reconheça
@@ -35,7 +35,7 @@ def create_app(config_class=Config):
     @login_manager.user_loader
     def load_user(user_id):
         return Usuario.query.get(int(user_id))
-    
+
     # --- Registro dos Blueprints (nossas rotas organizadas) ---
     # Ainda não criamos esses arquivos, mas já deixamos a estrutura pronta.
     # from app.routes.auth_routes import bp as auth_bp
@@ -48,5 +48,5 @@ def create_app(config_class=Config):
     @app.route('/teste')
     def test_page():
         return '<h1>A configuração inicial está funcionando!</h1>'
-    
+
     return app

@@ -1,0 +1,11 @@
+{
+    "pylint.args": [
+        // Ignore list
+        "--disable=C0115",
+        "--disable=C0116",
+        "--disable=R0903",
+        "--disable=C0301",
+        "--disable=C0415",
+
+    ]
+}

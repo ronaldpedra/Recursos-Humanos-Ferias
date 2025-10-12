@@ -1,5 +1,6 @@
-# ./congig.py
-
+"""
+/projeto-ferias/congig.py
+"""
 import os
 from dotenv import load_dotenv
 
