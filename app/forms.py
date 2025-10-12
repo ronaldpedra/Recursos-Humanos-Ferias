@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired, Length
 
 class LoginForm(FlaskForm):
     """Formulário de login."""
-    identidade = SubmitField(
+    identidade = StringField(
         'Identidade',
         validators=[DataRequired(message="Por favor, insira sua identidade.")]
     )
