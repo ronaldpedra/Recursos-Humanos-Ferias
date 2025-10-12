@@ -596,3 +596,7 @@ Código para `/projeto-ferias/app/templates/base.html`:
 </body>
 </html>
 ```
+
+Agora, crie a página de login em app/templates/auth/login.html.
+
+Código para /projeto-ferias/app/templates/auth/login.html:
