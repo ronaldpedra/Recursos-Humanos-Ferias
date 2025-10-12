@@ -640,3 +640,51 @@ Código para `/projeto-ferias/app/templates/base.html`:
 </div>
 {% endblock %}
 ```
+
+---
+
+**Passo 4: Registrar o Blueprint e Criar uma Rota Principal**
+
+Agora, precisamos dizer à nossa aplicação para usar as rotas que acabamos de criar.
+
+Modifique seu arquivo `/projeto-ferias/app/__init__.py`:
+
+```python
+# ... (imports no início) ...
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    
+    from app.models import Usuario
+    
+    # ... (@login_manager.user_loader) ...
+
+    # --- Registro dos Blueprints ---
+    from app.routes.auth_routes import bp as auth_bp
+    app.register_blueprint(auth_bp) # Não precisa de prefixo para /login
+
+    # Vamos criar um Blueprint principal para a página inicial
+    from flask import Blueprint, render_template
+    from flask_login import login_required
+    
+    main_bp = Blueprint('main', __name__)
+
+    @main_bp.route('/')
+    @main_bp.route('/index')
+    @login_required # Protege esta rota, exigindo login
+    def index():
+        return "<h1>Bem-vindo ao Sistema de Gestão de Férias!</h1>"
+
+    app.register_blueprint(main_bp)
+
+    @app.route('/test')
+    def test_page():
+        return '<h1>A configuração inicial está funcionando!</h1>'
+
+    return app
+```
