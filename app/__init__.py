@@ -37,12 +37,23 @@ def create_app(config_class=Config):
         return Usuario.query.get(int(user_id))
 
     # --- Registro dos Blueprints (nossas rotas organizadas) ---
-    # Ainda não criamos esses arquivos, mas já deixamos a estrutura pronta.
-    # from app.routes.auth_routes import bp as auth_bp
-    # app.register_blueprint(auth_bp, url_prefix='/auth')
+    from app.routes.auth_routes import bp as auth_bp
+    app.register_blueprint(auth_bp) # Nao precisa de prefixo para login
 
-    # from app.routes.militar_routes import bp as militar_bp
-    # app.register_blueprint(militar_bp, url_prefix='/militar')
+    # Vamos criar um Blueprint principal para a página inicial
+    from flask import Blueprint, render_template
+    from flask_login import login_required
+
+    main_bp = Blueprint('main', __name__)
+
+    @main_bp.route('/')
+    @main_bp.route('/index')
+    @login_required # Protege essa rota, exigindo login
+    def index():
+        return '<h1>Bem-vindo ao Sistema de Gestão de Férias!</h1>'
+    
+    app.register_blueprint(main_bp)
+
 
     # Apenas uma rota de teste para garantir que tudo está funcionando
     @app.route('/teste')
