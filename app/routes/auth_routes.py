@@ -12,7 +12,7 @@ bp = Blueprint('auth', __name__)
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     # Se o usuário já estiver logado, redireciona para uma página principal
-    if current_user.is_autenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
     form = LoginForm()

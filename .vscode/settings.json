@@ -6,6 +6,5 @@
         "--disable=R0903",
         "--disable=C0301",
         "--disable=C0415",
-
     ]
 }

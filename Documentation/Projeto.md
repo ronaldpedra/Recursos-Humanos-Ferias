@@ -96,12 +96,11 @@ A seguir verificaremos o `app/models.py`:
 
 ```python
 # app/models.py
-from flask_sqlalchemy import SQLAlchemy
+import enum
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import enum
+from app import db
 
-db = SQLAlchemy()
 
 # Usando Enums para padronizar papéis e status
 class PapelUsuario(enum.Enum):
@@ -127,7 +126,7 @@ class Usuario(db.Model, UserMixin):
     papel = db.Column(db.Enum(PapelUsuario), nullable=False, default=PapelUsuario.MILITAR)
     
     secao_id = db.Column(db.Integer, db.ForeignKey('secao.id'))
-    secao = db.relationship('Secao', back_populates='integrantes')
+    secao = db.relationship('Secao', back_populates='integrantes', foreign_keys=[secao_id])
 
     periodos_aquisitivos = db.relationship('PeriodoAquisitivo', back_populates='usuario', lazy='dynamic')
     solicitacoes = db.relationship('SolicitacaoFerias', back_populates='solicitante', lazy='dynamic')
