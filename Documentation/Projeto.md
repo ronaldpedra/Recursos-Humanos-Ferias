@@ -744,3 +744,47 @@ flask create-gestor Chaves 1234567890 senhaforte123
 ```
 
 Você deverá ver a mensagem: `Usuário Gestor 'Chaves' criado com sucesso!`
+
+---
+
+Ótimo! Vamos mergulhar na construção das funcionalidades do Gestor de Pessoal. Esta é a espinha dorsal administrativa do sistema, então vamos construí-la de forma robusta e intuitiva.
+
+Nosso plano de ação será:
+
+1. **Proteger as Rotas do Gestor**: Criaremos um mecanismo para garantir que apenas usuários com o papel de "Gestor" possam acessar essas páginas.
+
+2. **Gerenciamento de Seções**: Construiremos a interface para o gestor criar, visualizar e editar as seções da organização.
+
+3. **Gerenciamento de Militares**: Em seguida, faremos a interface para o gestor cadastrar novos militares, editar seus dados e vinculá-los a uma seção.
+
+4. **Atualizar o Dashboard**: Criaremos um painel de controle para o Gestor, que servirá como ponto de partida para todas as ações administrativas.
+
+---
+
+**Passo 1: Criar um Decorator para Proteção de Rota**
+
+Para evitar que um militar comum acesse as páginas de administração, criaremos um "decorator" personalizado.
+
+Crie um novo arquivo chamado `decorators.py` dentro da pasta `app` (`/projeto-ferias/app/decorators.py`):
+
+```python
+# /projeto-ferias/app/decorators.py
+
+from functools import wraps
+from flask import abort
+from flask_login import current_user
+from .models import PapelUsuario
+
+def gestor_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.papel != PapelUsuario.GESTOR:
+            abort(403)  # Proibido o acesso
+        return f(*args, **kwargs)
+    return decorated_function
+```
+
+Este decorator `@gestor_required` poderá ser colocado acima de qualquer rota para protegê-la.
+
+---
+

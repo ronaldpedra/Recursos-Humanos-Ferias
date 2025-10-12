@@ -1,8 +1,8 @@
 """Estrutura inicial do banco de dados
 
-Revision ID: 93a58b2ee4dc
+Revision ID: 01abccac9173
 Revises: 
-Create Date: 2025-10-12 17:46:07.039245
+Create Date: 2025-10-12 19:38:03.039024
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '93a58b2ee4dc'
+revision = '01abccac9173'
 down_revision = None
 branch_labels = None
 depends_on = None
