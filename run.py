@@ -2,9 +2,9 @@
 /projeto-ferias/run.py
 """
 
+import click
 from app import create_app, db
 from app.models import Usuario, Secao, PeriodoAquisitivo, SolicitacaoFerias
-import click
 
 # Cria instância da aplicação usando a nossa fábrica
 app = create_app()
