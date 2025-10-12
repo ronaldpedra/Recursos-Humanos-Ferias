@@ -555,3 +555,44 @@ def logout():
     flash('Você foi desconectado.', 'info')
     return redirect(url_for('auth.login'))
 ```
+
+---
+
+**Passo 3: Criar os Templates HTML**
+
+Agora, vamos criar a interface visual.
+
+1. Crie a pasta `auth` dentro de `app/templates`.
+
+2. Crie o arquivo `base.html` em `app/templates/`. Este será nosso template mestre.
+
+Código para `/projeto-ferias/app/templates/base.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{{ title }} - SGF</title>
+</head>
+<body>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
