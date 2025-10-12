@@ -908,4 +908,122 @@ def gerenciar_usuarios():
 
 ---
 
+**Passo 4: Templates do Gestor**
 
+Precisamos das telas para o gestor interagir.
+
+1. Crie a pasta `gestor` dentro de `app/templates`.
+
+2. Crie os seguintes arquivos dentro de `app/templates/gestor/`:
+
+**Arquivo** `dashboard.html`:
+
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard do Gestor</h1>
+<p>Bem-vindo, {{ current_user.nome_guerra }}.</p>
+<div class="list-group">
+  <a href="{{ url_for('gestor.gerenciar_secoes') }}" class="list-group-item list-group-item-action">
+    Gerenciar Seções
+  </a>
+  <a href="{{ url_for('gestor.gerenciar_usuarios') }}" class="list-group-item list-group-item-action">
+    Gerenciar Militares
+  </a>
+  <a href="#" class="list-group-item list-group-item-action disabled">Gerenciar Férias (em breve)</a>
+</div>
+{% endblock %}
+```
+
+**Arquivo** `secoes.html`:
+
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h3>Nova Seção</h3>
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+    <div class="col-md-8">
+        <h3>Seções Cadastradas</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for secao in secoes %}
+                <tr>
+                    <td>{{ secao.nome }}</td>
+                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+```
+
+**Arquivo** `usuarios.html`: (Este é um pouco maior)
+
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <h3>Cadastrar Militar</h3>
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-2">{{ form.nome_completo.label(class="form-label") }}{{ form.nome_completo(class="form-control") }}</div>
+            <div class="mb-2">{{ form.nome_guerra.label(class="form-label") }}{{ form.nome_guerra(class="form-control") }}</div>
+            <div class="mb-2">{{ form.posto_grad.label(class="form-label") }}{{ form.posto_grad(class="form-control") }}</div>
+            <div class="mb-2">{{ form.identidade.label(class="form-label") }}{{ form.identidade(class="form-control") }}</div>
+            <div class="mb-2">{{ form.secao_id.label(class="form-label") }}{{ form.secao_id(class="form-select") }}</div>
+            <div class="mb-2">{{ form.papel.label(class="form-label") }}{{ form.papel(class="form-select") }}</div>
+            <div class="mb-2">{{ form.password.label(class="form-label") }}{{ form.password(class="form-control") }}</div>
+            <div class="mb-2">{{ form.password2.label(class="form-label") }}{{ form.password2(class="form-control") }}</div>
+            {{ form.submit(class="btn btn-primary mt-3") }}
+        </form>
+    </div>
+    <div class="col-lg-8">
+        <h3>Militares Cadastrados</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome de Guerra</th>
+                    <th>Seção</th>
+                    <th>Papel</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in usuarios %}
+                <tr>
+                    <td>{{ user.posto_grad }} {{ user.nome_guerra }}</td>
+                    <td>{{ user.secao.nome if user.secao else 'N/A' }}</td>
+                    <td>{{ user.papel.value }}</td>
+                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+```
+
+---
