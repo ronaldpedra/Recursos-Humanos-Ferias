@@ -688,3 +688,48 @@ def create_app(config_class=Config):
 
     return app
 ```
+
+---
+
+**Passo 5: Criar o Comando para Cadastrar o Gestor**
+
+Esta é a forma mais segura de criar o primeiro usuário. Adicionaremos um comando personalizado ao Flask.
+
+**Abra o arquivo `run.py` e adicione o seguinte código:**
+
+```python
+# /projeto-ferias/run.py
+
+from app import create_app, db
+from app.models import Usuario, Secao, PeriodoAquisitivo, SolicitacaoFerias, PapelUsuario
+import click # Importe o click
+
+app = create_app()
+
+# ... (código do make_shell_context) ...
+
+@app.cli.command("create-gestor")
+@click.argument("nome_guerra")
+@click.argument("identidade")
+@click.argument("password")
+def create_gestor(nome_guerra, identidade, password):
+    """Cria um novo usuário com o papel de Gestor."""
+    if Usuario.query.filter_by(identidade=identidade).first():
+        print(f"Erro: Usuário com identidade {identidade} já existe.")
+        return
+
+    gestor = Usuario(
+        nome_completo=f"{nome_guerra} (Gestor)",
+        nome_guerra=nome_guerra,
+        identidade=identidade,
+        posto_grad="Admin",
+        papel=PapelUsuario.GESTOR
+    )
+    gestor.set_password(password)
+    db.session.add(gestor)
+    db.session.commit()
+    print(f"Usuário Gestor '{nome_guerra}' criado com sucesso!")
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
