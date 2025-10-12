@@ -1,8 +1,8 @@
 """Estrutura inicial do banco de dados
 
-Revision ID: bcf0136ab601
+Revision ID: 1162842e5450
 Revises: 
-Create Date: 2025-10-11 22:56:59.409377
+Create Date: 2025-10-12 02:15:27.069803
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bcf0136ab601'
+revision = '1162842e5450'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,7 +37,8 @@ def upgrade():
     sa.Column('secao_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['secao_id'], ['secao.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('identidade')
+    sa.UniqueConstraint('identidade'),
+    sa.UniqueConstraint('nome_guerra')
     )
     op.create_table('periodo_aquisitivo',
     sa.Column('id', sa.Integer(), nullable=False),
