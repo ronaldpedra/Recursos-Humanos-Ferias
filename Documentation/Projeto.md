@@ -23,8 +23,6 @@ Os arquivos serão organizados seguindo a estrutura típica para um projeto Flas
 ```bash
 /Recursos-Humanos-Ferias/
 |-- app/
-|   |-- __init__.py         # Inicializa a aplicação Flask e extensões
-|   |-- models.py           # Definição dos modelos do SQLAlchemy
 |   |-- routes/             # (Opcional, mas bom para organizar)
 |   |   |-- auth_routes.py
 |   |   |-- militar_routes.py
@@ -33,10 +31,13 @@ Os arquivos serão organizados seguindo a estrutura típica para um projeto Flas
 |   |-- static/
 |   |   |-- css/
 |   |   `-- js/
-|   `-- templates/
-|       |-- base.html
-|       |-- login.html
-|       |-- ... (outros templates)
+|   |-- templates/
+|   |   |-- base.html
+|   |   |-- login.html
+|   |   `-- ... (outros templates)
+|   |-- __init__.py         # Inicializa a aplicação Flask e extensões
+|   |-- forms.py            # Definição dos formulários do projeto
+|   |-- models.py           # Definição dos modelos do SQLAlchemy
 |
 |-- Documentation/
 |-- migrations/             # Para o Flask-Migrate
@@ -411,3 +412,67 @@ flask db upgrade
 Este comando executará o script e criará o arquivo `ferias.db` na raiz do seu projeto com todas as tabelas que definimos!
 
 **Ao final, você terá um servidor Flask rodando.** Você pode iniciar o servidor com `flask run` ou `python run.py` e acessar `http://127.0.0.1:5000/test` no seu navegador para ver a mensagem de confirmação.
+
+---
+
+Vamos construir o sistema de autenticação. Esta é uma parte fundamental e faremos isso de forma segura e organizada, utilizando as melhores práticas do Flask.
+
+Nosso plano será:
+
+1. **Criar os formulários** de login e registro com a extensão Flask-WTF para validação e segurança.
+
+2. **Desenvolver as rotas** (`/login`, `/logout`) dentro de um Blueprint para manter o código organizado.
+
+3. **Criar os templates HTML** para a página de login e um template base que será herdado por todas as outras páginas.
+
+4. **Criar um comando customizado** para cadastrar o primeiro usuário "Gestor" de forma segura, sem precisar de uma página de registro pública.
+
+---
+
+**Passo 1: Adicionar Flask-WTF e Criar os Formulários**
+
+Primeiro, vamos adicionar a biblioteca que nos ajudará a gerenciar os formulários.
+
+1. Adicione `Flask-WTF` ao seu arquivo `requirements.txt`:
+
+```bash
+Flask==2.3.3
+SQLAlchemy==2.0.21
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.5
+python-dotenv==1.0.0
+Flask-Login==0.6.2
+Werkzeug==2.3.7
+Flask-WTF==1.1.1  # Adicione esta linha
+```
+
+2. Instale a nova dependência no seu ambiente virtual (`venv`):
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Agora, crie um novo arquivo `app/forms.py` para definir nossos formulários.
+
+**Adicione o seguinte código ao arquivo** `/projeto-ferias/app/forms.py`:
+
+```python
+# /projeto-ferias/app/forms.py
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Length
+
+class LoginForm(FlaskForm):
+    """Formulário de login."""
+    identidade = StringField(
+        'Identidade', 
+        validators=[DataRequired(message="Por favor, insira sua identidade.")]
+    )
+    password = PasswordField(
+        'Senha', 
+        validators=[DataRequired(message="Por favor, insira sua senha.")]
+    )
+    remember_me = BooleanField('Lembrar-me')
+    submit = SubmitField('Entrar')
+```
