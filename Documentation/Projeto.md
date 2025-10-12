@@ -733,3 +733,15 @@ def create_gestor(nome_guerra, identidade, password):
 if __name__ == '__main__':
     app.run(debug=True)
 ```
+
+**Como Usar**
+
+1. **Abra o terminal** na pasta raiz do projeto com o ambiente virtual ativado.
+
+2. **Execute o comando** para criar seu primeiro gestor, substituindo os dados pelos que você desejar:
+
+```bash
+flask create-gestor Chaves 1234567890 senhaforte123
+```
+
+Você deverá ver a mensagem: `Usuário Gestor 'Chaves' criado com sucesso!`
