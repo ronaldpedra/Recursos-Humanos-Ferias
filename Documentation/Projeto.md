@@ -788,3 +788,55 @@ Este decorator `@gestor_required` poderá ser colocado acima de qualquer rota pa
 
 ---
 
+**Passo 2: Formulários para Gestão**
+
+Vamos atualizar nosso arquivo `app/forms.py` para incluir os formulários de criação de Seção e Usuário.
+
+**Adicione as seguintes classes ao arquivo** `/projeto-ferias/app/forms.py`:
+
+```python
+# ... (imports existentes) ...
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from .models import Usuario
+
+# ... (LoginForm existente) ...
+
+class SecaoForm(FlaskForm):
+    """Formulário para criar ou editar uma Seção."""
+    nome = StringField(
+        'Nome da Seção', 
+        validators=[DataRequired(), Length(min=3, max=100)]
+    )
+    submit = SubmitField('Salvar Seção')
+
+class UsuarioCreateForm(FlaskForm):
+    """Formulário para o Gestor criar um novo usuário."""
+    nome_completo = StringField('Nome Completo', validators=[DataRequired()])
+    nome_guerra = StringField('Nome de Guerra', validators=[DataRequired()])
+    identidade = StringField('Identidade', validators=[DataRequired()])
+    posto_grad = StringField('Posto/Graduação', validators=[DataRequired()])
+    secao_id = SelectField('Seção', coerce=int, validators=[DataRequired()])
+    papel = SelectField(
+        'Papel', 
+        choices=[(papel.name, papel.value) for papel in PapelUsuario],
+        validators=[DataRequired()]
+    )
+    password = PasswordField(
+        'Senha', 
+        validators=[DataRequired(), Length(min=6)]
+    )
+    password2 = PasswordField(
+        'Confirmar Senha', 
+        validators=[DataRequired(), EqualTo('password', message='As senhas devem ser iguais.')]
+    )
+    submit = SubmitField('Cadastrar Militar')
+
+    def validate_identidade(self, identidade):
+        user = Usuario.query.filter_by(identidade=identidade.data).first()
+        if user:
+            raise ValidationError('Esta identidade já está em uso.')
+```
+
+---
+
