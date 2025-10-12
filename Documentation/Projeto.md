@@ -55,13 +55,25 @@ Os arquivos serão organizados seguindo a estrutura típica para um projeto Flas
 **1. Dependências (requirements.txt):**
 
 ```bash
-Flask==2.3.3
-SQLAlchemy==2.0.21
+alembic==1.16.5
+blinker==1.9.0
+click==8.3.0
+colorama==0.4.6
+Flask==3.1.2
+Flask-Login==0.6.3
+Flask-Migrate==4.1.0
 Flask-SQLAlchemy==3.1.1
-Flask-Migrate==4.0.5
-python-dotenv==1.0.0
-Flask-Login==0.6.2
-Werkzeug==2.3.7  # Para hash de senhas
+Flask-WTF==1.2.2
+greenlet==3.2.4
+itsdangerous==2.2.0
+Jinja2==3.1.6
+Mako==1.3.10
+MarkupSafe==3.0.3
+python-dotenv==1.1.1
+SQLAlchemy==2.0.44
+typing_extensions==4.15.0
+Werkzeug==3.1.3             # Para hash de senhas
+WTForms==3.2.1
 ```
 
 **2. Variáveis de Ambiente (.env):**
@@ -436,14 +448,25 @@ Primeiro, vamos adicionar a biblioteca que nos ajudará a gerenciar os formulár
 1. Adicione `Flask-WTF` ao seu arquivo `requirements.txt`:
 
 ```bash
-Flask==2.3.3
-SQLAlchemy==2.0.21
+alembic==1.16.5
+blinker==1.9.0
+click==8.3.0
+colorama==0.4.6
+Flask==3.1.2
+Flask-Login==0.6.3
+Flask-Migrate==4.1.0
 Flask-SQLAlchemy==3.1.1
-Flask-Migrate==4.0.5
-python-dotenv==1.0.0
-Flask-Login==0.6.2
-Werkzeug==2.3.7
-Flask-WTF==1.1.1  # Adicione esta linha
+Flask-WTF==1.2.2            # Gestão de formulários
+greenlet==3.2.4
+itsdangerous==2.2.0
+Jinja2==3.1.6
+Mako==1.3.10
+MarkupSafe==3.0.3
+python-dotenv==1.1.1
+SQLAlchemy==2.0.44
+typing_extensions==4.15.0
+Werkzeug==3.1.3             # Para hash de senhas
+WTForms==3.2.1
 ```
 
 2. Instale a nova dependência no seu ambiente virtual (`venv`):
