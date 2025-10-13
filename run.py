@@ -4,7 +4,7 @@
 
 import click
 from app import create_app, db
-from app.models import Usuario, Secao, PeriodoAquisitivo, SolicitacaoFerias, PapelUsuario
+from app.models import Usuario, Secao, PeriodoAquisitivo, SolicitacaoFerias
 
 # Cria instância da aplicação usando a nossa fábrica
 app = create_app()
@@ -32,4 +32,4 @@ def create_user(nome):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

@@ -1,7 +1,7 @@
 # /Recursos-Humanos-Ferias/app/routes/gestor_routes.py
 
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_required, current_user
+from flask_login import login_required
 from app import db
 from app.models import Usuario, Secao, PapelUsuario
 from app.forms import SecaoForm, UsuarioCreateForm
@@ -27,7 +27,7 @@ def gerenciar_secoes():
         db.session.commit()
         flash('Seção criada com sucesso!', 'success')
         return redirect(url_for('gestor.gerenciar_secoes'))
-    
+
     secoes = Secao.query.order_by(Secao.nome).all()
     return render_template('gestor/secoes.html', title='Gerenciar Seções', form=form, secoes=secoes)
 
@@ -49,11 +49,10 @@ def gerenciar_usuarios():
             papel=PapelUsuario[form.papel.data]
         )
         user.set_password(form.password.data)
-        print(user.nome_completo, user.nome_guerra)
         db.session.add(user)
         db.session.commit()
         flash('Militar cadastrado com sucesso!', 'success')
-        return render_template(url_for('gestor.gerenciar_usuarios'))
-    
+        return redirect(url_for('gestor.gerenciar_usuarios'))
+
     usuarios = Usuario.query.order_by(Usuario.nome_completo).all()
     return render_template('gestor/usuarios.html', title='Gerenciar Militares', form=form, usuarios=usuarios)

@@ -24,14 +24,14 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Identidade ou senha inválida', 'danger')
             return redirect(url_for('auth.login'))
-        
+
         # Loga o usuário com o Flask-Login
         login_user(user, remember=form.remember_me.data)
         flash('Login realizado com sucesso!', 'success')
 
         # Redireciona para o dashboard apropriado
         return redirect(url_for('main.index'))
-    
+
     return render_template('auth/login.html', title='Login', form=form)
 
 @bp.route('/logout')

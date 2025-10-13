@@ -47,9 +47,10 @@ class Usuario(db.Model, UserMixin):
 class Secao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), unique=True, nullable=False)
-    chefe_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
 
+    chefe_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
     chefe = db.relationship('Usuario', foreign_keys=[chefe_id])
+
     integrantes = db.relationship('Usuario', back_populates='secao', foreign_keys=[Usuario.secao_id])
 
 

@@ -31,10 +31,10 @@
             <tbody>
                 {% for user in usuarios %}
                 <tr>
-                    <th>{{ user.posto_grad }} {{ user.nome_guerra }}</th>
-                    <th>{{ user.secao.nome if user.secao else 'N/A' }}</th>
-                    <th>{{ user.papel.value }}</th>
-                    <th><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></th>
+                    <td>{{ user.posto_grad }} {{ user.nome_guerra }}</td>
+                    <td>{{ user.secao.nome if user.secao else 'N/A' }}</td>
+                    <td>{{ user.papel.value }}</td>
+                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
