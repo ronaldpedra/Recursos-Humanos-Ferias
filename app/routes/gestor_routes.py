@@ -49,6 +49,7 @@ def gerenciar_usuarios():
             papel=PapelUsuario[form.papel.data]
         )
         user.set_password(form.password.data)
+        print(user.nome_completo, user.nome_guerra)
         db.session.add(user)
         db.session.commit()
         flash('Militar cadastrado com sucesso!', 'success')
