@@ -1027,3 +1027,60 @@ Precisamos das telas para o gestor interagir.
 ```
 
 ---
+
+**Passo 5: Integrar Tudo na Aplicação**
+
+Finalmente, vamos registrar nosso novo Blueprint e ajustar o redirecionamento do login.
+
+**Modifique o arquivo** `/projeto-ferias/app/__init__.py`:
+
+```python
+# ... (imports no início) ...
+
+def create_app(config_class=Config):
+    # ... (configuração inicial) ...
+    
+    # --- Registro dos Blueprints ---
+    from app.routes.auth_routes import bp as auth_bp
+    app.register_blueprint(auth_bp)
+
+    from app.routes.gestor_routes import bp as gestor_bp
+    app.register_blueprint(gestor_bp, url_prefix='/gestor')
+
+    # ... (Blueprint 'main' existente) ...
+    # ATUALIZE a rota index do blueprint main para redirecionar
+    @main_bp.route('/')
+    @main_bp.route('/index')
+    @login_required
+    def index():
+        if current_user.papel == PapelUsuario.GESTOR:
+            return redirect(url_for('gestor.dashboard'))
+        # elif current_user.papel == PapelUsuario.CHEFE_SECAO:
+        #     return redirect(url_for('chefe.dashboard'))
+        else:
+            # return redirect(url_for('militar.dashboard'))
+            return "<h1>Dashboard do Militar (a ser construído)</h1>"
+    
+    app.register_blueprint(main_bp)
+
+    # ... (rota de teste e return app) ...
+    return app
+```
+
+**Modifique também o redirecionamento no arquivo** `/projeto-ferias/app/routes/auth_routes.py`:
+
+Na função `login`, altere a linha `return redirect(url_for('main.index'))` para que ela também aponte para a rota `main.index` que agora contém a lógica de redirecionamento. Isso já deve estar correto com o código anterior, mas é bom verificar.
+
+**Como Usar**
+
+1. Inicie a aplicação com `flask run`.
+
+2. **Faça login** com o usuário "Gestor" que você criou anteriormente.
+
+3. Você será automaticamente redirecionado para o **Dashboard do Gestor**.
+
+4. Clique em "Gerenciar Seções" para **criar algumas seções**.
+
+5. Depois, clique em "Gerenciar Militares" para **cadastrar novos usuários**, atribuindo-os às seções que você acabou de criar.
+
+---

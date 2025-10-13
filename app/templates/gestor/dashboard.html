@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard do Gestor</h1>
+<p>Bem-vindo, {{ current_user.nome_guerra }}.</p>
+<div class="list-group">
+    <a href="{{ url_for('gestor.gerenciar_secoes') }}" class="list-group-item list-group-item-action">
+        Gerenciar Seções
+    </a>
+    <a href="{{ url_for('gestor.gerenciar_usuarios') }}" class="list-group-item list-group-item-action">
+        Gerenciar Militares
+    </a>
+    <a href="#" class="list-group-item list-group-item-action disabled">
+        Gerenciar Férias (em breve)
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <h3>Cadastrar Militar</h3>
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-2">{{ form.nome_completo.label(class="form-label") }}{{ form.nome_completo(class="form-control") }}</div>
+            <div class="mb-2">{{ form.nome_guerra.label(class="form-label") }}{{ form.nome_guerra(class="form-control") }}</div>
+            <div class="mb-2">{{ form.posto_grad.label(class="form-label") }}{{ form.posto_grad(class="form-control") }}</div>
+            <div class="mb-2">{{ form.identidade.label(class="form-label") }}{{ form.identidade(class="form-control") }}</div>
+            <div class="mb-2">{{ form.secao_id.label(class="form-label") }}{{ form.secao_id(class="form-select") }}</div>
+            <div class="mb-2">{{ form.papel.label(class="form-label") }}{{ form.papel(class="form-select") }}</div>
+            <div class="mb-2">{{ form.password.label(class="form-label") }}{{ form.password(class="form-control") }}</div>
+            <div class="mb-2">{{ form.password2.label(class="form-label") }}{{ form.password2(class="form-control") }}</div>
+            {{ form.submit(class="btn btn-primary mt-3") }}
+        </form>
+    </div>
+    <div class="col-lg-8">
+        <h3>Militares Cadastrados</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome de Guerra</th>
+                    <th>Seção</th>
+                    <th>Papel</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in usuarios %}
+                <tr>
+                    <th>{{ user.posto_grad }} {{ user.nome_guerra }}</th>
+                    <th>{{ user.secao.nome if user.secao else 'N/A' }}</th>
+                    <th>{{ user.papel.value }}</th>
+                    <th><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
