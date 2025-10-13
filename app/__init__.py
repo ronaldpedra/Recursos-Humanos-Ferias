@@ -2,10 +2,10 @@
 /projeto-ferias/app/__init__.py
 """
 import click
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from config import Config
 
 
@@ -43,6 +43,9 @@ def create_app(config_class=Config):
     from app.routes.auth_routes import bp as auth_bp
     app.register_blueprint(auth_bp)  # Nao precisa de prefixo para login
 
+    from app.routes.gestor_routes import bp as gestor_bp
+    app.register_blueprint(gestor_bp, url_prefix='/gestor')
+
     # Vamos criar um Blueprint principal para a página inicial
     from flask import Blueprint
     from flask_login import login_required
@@ -53,7 +56,13 @@ def create_app(config_class=Config):
     @main_bp.route('/index')
     @login_required  # Protege essa rota, exigindo login
     def index():
-        return '<h1>Bem-vindo ao Sistema de Gestão de Férias!</h1>'
+        if current_user.papel == PapelUsuario.GESTOR:
+            return redirect(url_for('gestor.dashboard'))
+        # elif current_user.papel == PapelUsuario.CHEFE_SECAO:
+        #     return redirect(url_for('chefe.dashboard'))
+        else:
+            # return redirect(url_for('militar.dashboard'))
+            return '<h1>Dashboard do Militar (a ser construído)</h1>'
 
     app.register_blueprint(main_bp)
 
@@ -80,7 +89,6 @@ def create_app(config_class=Config):
         print(f"Usuário Gestor '{nome_guerra}' criado com sucesso!")
 
     # Apenas uma rota de teste para garantir que tudo está funcionando
-
     @app.route('/teste')
     def test_page():
         return '<h1>A configuração inicial está funcionando!</h1>'
