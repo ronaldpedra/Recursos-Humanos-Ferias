@@ -10,6 +10,10 @@
                 {{ form.nome.label(class="form-label") }}
                 {{ form.nome(class="form-control") }}
             </div>
+            <div class="mb-3">
+                {{ form.chefe_id.label(class="form-label") }}
+                {{ form.chefe_id(class="form-select") }}
+            </div>
             {{ form.submit(class="btn btn-primary") }}
         </form>
     </div>
@@ -19,6 +23,7 @@
             <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>Chefe</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -26,6 +31,7 @@
                 {% for secao in secoes %}
                 <tr>
                     <td>{{ secao.nome }}</td>
+                    <td>{{ secao.chefe.nome_guerra if secao.chefe else 'N/D' }}</td>
                     <td><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></td>
                 </tr>
                 {% endfor %}

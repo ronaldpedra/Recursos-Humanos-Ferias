@@ -9,7 +9,6 @@ from app import db
 
 class PapelUsuario(enum.Enum):
     MILITAR = 'Militar'
-    CHEFE_SECAO = 'Chefe de Seção'
     GESTOR = 'Gestor de Pessoal'
 
 
@@ -25,13 +24,13 @@ class StatusFerias(enum.Enum):
 class Usuario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome_completo = db.Column(db.String(150), nullable=False)
-    nome_guerra = db.Column(db.String(50), nullable=False, unique=True)
+    nome_guerra = db.Column(db.String(50), nullable=False)
     identidade = db.Column(db.String(20), unique=True, nullable=False)
     posto_grad = db.Column(db.String(50), nullable=False)  # Ex: 3º Sgt, Cap
     password_hash = db.Column(db.String(256), nullable=False)
     papel = db.Column(db.Enum(PapelUsuario), nullable=False, default=PapelUsuario.MILITAR)
 
-    secao_id = db.Column(db.Integer, db.ForeignKey('secao.id'))
+    secao_id = db.Column(db.Integer, db.ForeignKey('secao.id'), nullable=True)
     secao = db.relationship('Secao', back_populates='integrantes', foreign_keys=[secao_id])
 
     periodos_aquisitivos = db.relationship('PeriodoAquisitivo', back_populates='usuario', lazy='dynamic')
@@ -47,10 +46,9 @@ class Usuario(db.Model, UserMixin):
 class Secao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), unique=True, nullable=False)
+    chefe_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
 
-    chefe_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
     chefe = db.relationship('Usuario', foreign_keys=[chefe_id])
-
     integrantes = db.relationship('Usuario', back_populates='secao', foreign_keys=[Usuario.secao_id])
 
 
@@ -68,13 +66,13 @@ class PeriodoAquisitivo(db.Model):
 
 class SolicitacaoFerias(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    solicitante_id = db.Column(
-        db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    solicitante_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     periodo_aquisitivo_id = db.Column(db.Integer, db.ForeignKey('periodo_aquisitivo.id'), nullable=False)
 
     data_inicio = db.Column(db.Date, nullable=False)
-    data_fim = db.Column(db.Date, nullable=False)
-    dias_solicitados = db.Column(db.Integer, nullable=False) # Ex: "30_DIAS", "15_DIAS", "10_DIAS", "DESCONTO"
+    data_fim = db.Column(db.Date, nullable=False) # Ex: "30_DIAS", "15_DIAS", "10_DIAS", "DESCONTO"
+    dias_solicitados = db.Column(db.Integer, nullable=False)
+
     tipo_solicitacao = db.Column(db.String(50))
     status = db.Column(db.Enum(StatusFerias), nullable=False, default=StatusFerias.SOLICITADA)
 
