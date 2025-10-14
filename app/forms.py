@@ -18,7 +18,7 @@ class LoginForm(FlaskForm):
 class SecaoForm(FlaskForm):
     """Formulário para criar ou editar uma Seção."""
     nome = StringField('Nome da Seção', validators=[DataRequired(), Length(min=3, max=100)])
-    chefe_id = SelectField('Chefe da Seção', coerce=int, validators=[Optional()])
+    # chefe_id = SelectField('Chefe da Seção', coerce=int, validators=[Optional()])
     submit = SubmitField('Salvar Seção')
 
 class SecaoEditForm(FlaskForm):

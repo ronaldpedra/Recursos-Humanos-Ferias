@@ -35,8 +35,8 @@ def gerenciar_secoes():
 @bp.route('/secao/<int:id>/editar', methods=['GET', 'POST'])
 @login_required
 @gestor_required
-def editar_secao(id):
-    secao = Secao.query.get_or_404(id)
+def editar_secao(id_secao):
+    secao = Secao.query.get_or_404(id_secao)
     form = SecaoEditForm(obj=secao)
     form.chefe_id.choices = [(0, 'Nenhum')] + [(u.id, f"{u.posto_grad} {u.nome_guerra}") for u in Usuario.query.order_by('nome_guerra').all()]
 
@@ -79,9 +79,9 @@ def gerenciar_usuarios():
 @bp.route('/usuario/<int:id>/editar', methods=['GET', 'POST'])
 @login_required
 @gestor_required
-def editar_usuario(id):
-    user = Usuario.query.get_or_404(id)
-    form = UsuarioEditForm(original_identidade=user.identidate, obj=user)
+def editar_usuario(id_usuario):
+    user = Usuario.query.get_or_404(id_usuario)
+    form = UsuarioEditForm(original_identidade=user.identidade, obj=user)
     form.secao_id.choices = [(0, 'Nenhuma')] + [(s.id, s.nome) for s in Secao.query.order_by('nome').all()]
 
     if form.validate_on_submit():
@@ -94,7 +94,7 @@ def editar_usuario(id):
         db.session.commit()
         flash('Dados do militar atualizados com sucesso!', 'success')
         return redirect(url_for('gestor.gerenciar_usuarios'))
-    
+
     form.papel.data = user.papel.name
     form.secao_id.data = user.secao_id if user.secao_id else 0
 

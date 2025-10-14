@@ -8,11 +8,7 @@
             {{ form.hidden_tag() }}
             <div class="mb-3">
                 {{ form.nome.label(class="form-label") }}
-                {{ form.nome(class="form-control") }}
-            </div>
-            <div class="mb-3">
-                {{ form.chefe_id.label(class="form-label") }}
-                {{ form.chefe_id(class="form-select") }}
+                {{ form.nome(class="form-control", autocomplete="on") }}
             </div>
             {{ form.submit(class="btn btn-primary") }}
         </form>
@@ -31,8 +27,16 @@
                 {% for secao in secoes %}
                 <tr>
                     <td>{{ secao.nome }}</td>
-                    <td>{{ secao.chefe.nome_guerra if secao.chefe else 'N/D' }}</td>
-                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Editar</a></td>
+                    <td>
+                        {% if secao.chefe %}
+                            {{ secao.chefe.posto_grad }} {{ secao.chefe.nome_guerra }}
+                        {% else %}
+                            <span class="text-muted">Não definido</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('gestor.editar_secao', id=secao.id) }}" class="btn btn-sm btn-secondary">Editar</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
